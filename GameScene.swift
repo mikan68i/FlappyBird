@@ -98,8 +98,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate /* 追加 */{
             // 効果音を鳴らす
             self.run(sound)
             
-            // アイテムを消す
+            //アイテムを消す
+            SKAction.removeFromParent()
+            
+            // アイテムを透明にする
             itemNode.alpha = 0
+            
+            
             
         } else {
             // 壁か地面と衝突した
@@ -367,16 +372,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate /* 追加 */{
             if self.itemNode.alpha == 0 {
                 self.itemNode.alpha = 1
             }
-            // アイテム関連のノードを乗せるノードを作成
+            // アイテムのノードを乗せるノードを作成
             let item = SKNode()
             item.position = CGPoint(x: self.frame.size.width + itemTexture.size().width / 2, y: 0.0)
             item.zPosition = -51 // 雲より手前、地面より奥
-            
-            // 1〜random_y_rangeまでのランダム値を生成
-            //let random_y = CGFloat.random(in: 0..<random_y_range)
-            
-            // Y軸の下限にランダムな値を足して、下のアイテムのY座標を決定
-            //let under_item_y = under_item_lowest_y + random_y
             
             // アイテムは位置の振り幅上限
             let range_y = self.frame.size.height / 3
@@ -392,11 +391,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate /* 追加 */{
             itemSprite.position = CGPoint(x: 0.0, y: item_y)
             
             // スプライトに物理演算を設定する
-            itemSprite.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
+            itemSprite.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size()) //←型の変更？
             itemSprite.physicsBody?.categoryBitMask = self.itemCategory
             itemSprite.physicsBody?.isDynamic = false
             
-            // アイテムのーどにスプライトを追加する
+            // アイテムノードにスプライトを追加する
             item.addChild(itemSprite)
             
             //スコア用のノード
