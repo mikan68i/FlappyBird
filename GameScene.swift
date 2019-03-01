@@ -399,7 +399,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate /* 追加 */{
             
             //スコア用のノード
             let itemScoreNode = SKNode()
-            itemScoreNode.position = CGPoint(x: itemSprite.size.width, y: item_y)
+            itemScoreNode.position = CGPoint(x: 0.0, y: item_y)
             itemScoreNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: itemSprite.size.width/2, height: itemSprite.size.height/2))
             itemScoreNode.physicsBody?.isDynamic = false
             itemScoreNode.physicsBody?.categoryBitMask = self.itemScoreCategory
