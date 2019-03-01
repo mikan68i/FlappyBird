@@ -94,17 +94,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate /* 追加 */{
             print("itemScoreUp")
             itemScore += 1
             itemScoreLabelNode.text = "ItemScore:\(itemScore)"
-            
             // 効果音を鳴らす
             self.run(sound)
             
-            //アイテムを消す
-            SKAction.removeFromParent()
-            
-            // アイテムを透明にする
-            itemNode.alpha = 0
-            
-            
+            if (contact.bodyA.categoryBitMask & itemScoreCategory) == itemScoreCategory {
+                // bodyAであればbodyAのノードを消す
+                
+                contact.bodyA.node?.parent?.removeFromParent()
+            } else {
+                // bodyAでなければbodyBのノードを消す
+                
+                contact.bodyB.node?.parent?.removeFromParent()
+            }
             
         } else {
             // 壁か地面と衝突した
@@ -369,9 +370,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate /* 追加 */{
         
         // アイテムを生成するアクションを作成
         let createItemAnimation = SKAction.run({
-            if self.itemNode.alpha == 0 {
-                self.itemNode.alpha = 1
-            }
+            
             // アイテムのノードを乗せるノードを作成
             let item = SKNode()
             item.position = CGPoint(x: self.frame.size.width + itemTexture.size().width / 2, y: 0.0)
@@ -391,7 +390,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate /* 追加 */{
             itemSprite.position = CGPoint(x: 0.0, y: item_y)
             
             // スプライトに物理演算を設定する
-            itemSprite.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size()) //←型の変更？
+            itemSprite.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
             itemSprite.physicsBody?.categoryBitMask = self.itemCategory
             itemSprite.physicsBody?.isDynamic = false
             
